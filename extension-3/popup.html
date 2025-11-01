@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SafeSearch via Face</title>
+	<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h2>Face Age SafeSearch</h2>
+			<p class="subtitle">AI-Powered Age Detection</p>
+		</header>
+		<div class="video-wrapper">
+			<video id="video" autoplay playsinline></video>
+			<div class="video-overlay" id="videoOverlay"></div>
+		</div>
+		<canvas id="work" width="224" height="224" hidden></canvas>
+		
+		<div class="status-card">
+			<span id="statusText" class="status-text">Ready to analyze</span>
+		</div>
+		
+		<div class="result-card" id="resultCard">
+			<div class="result-content">
+				<div class="result-icon" id="resultIcon">👤</div>
+				<div class="result-text-wrapper">
+					<span id="resultText" class="result-main">-</span>
+					<span id="resultSub" class="result-sub"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="safesearch-badge" id="safesearchBadge" style="display:none">
+			<span class="badge-icon" id="badgeIcon">🛡️</span>
+			<span class="badge-text" id="badgeText">SafeSearch is ON</span>
+		</div>
+		
+		<div class="error-badge" id="errorBadge" style="display:none">
+			<span class="error-icon">⚠️</span>
+			<span class="error-text" id="errorText">SafeSearch is locked by browser settings</span>
+		</div>
+		
+		<div class="controls">
+			<button id="startBtn" class="btn btn-primary">
+				<span class="btn-icon">📷</span>
+				<span>Start Camera</span>
+			</button>
+			<button id="stopBtn" class="btn btn-secondary" disabled>
+				<span class="btn-icon">⏹️</span>
+				<span>Stop</span>
+			</button>
+		</div>
+		
+		<button id="openSettingsBtn" class="btn btn-link" style="display:none">Open camera settings</button>
+		<button id="openFullPageBtn" class="btn btn-link" style="display:none">Open full-page camera</button>
+		
+		<p class="note">Minor ⇒ SafeSearch ON | Major ⇒ SafeSearch OFF</p>
+	</div>
+	<script src="lib/ort.min.js"></script>
+	<script src="lib/tf.min.js"></script>
+	<script src="lib/blazeface.min.js"></script>
+	<script src="popup.js" type="module"></script>
+</body>
+</html>

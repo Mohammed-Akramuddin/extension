@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Face Age SafeSearch Toggle",
+  "version": "1.0.0",
+  "description": "Analyzes a face with an ONNX model to determine minor/major and toggles SafeSearch accordingly.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SafeSearch via Face Analysis",
+    "default_icon": "extension_img.jpg"
+  },
+  "icons": {
+    "128": "extension_img.jpg"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": []
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "swin_face_classifier.onnx",
+        "lib/*"
+      ],
+      "matches": [
+        "*://*/*",
+        "chrome-extension://*/*"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
