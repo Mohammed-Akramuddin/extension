@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Age SafeSearch - Terms & Consent</title>
+    <link rel="stylesheet" href="consent.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="consent-container">
+        <div class="consent-card">
+            <div class="header-section">
+                <div class="icon-wrapper">
+                    <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h1 class="title">Face Age SafeSearch</h1>
+                <p class="subtitle">AI-Powered Age Detection & Content Protection</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-block">
+                    <div class="section-icon">🎯</div>
+                    <h3>Purpose</h3>
+                    <p>This extension uses AI facial recognition to detect age and automatically toggle SafeSearch settings to provide appropriate content filtering.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="section-icon">📷</div>
+                    <h3>Camera Access</h3>
+                    <p>We require camera access to analyze facial features. Images are processed locally on your device and are never stored or transmitted.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="section-icon">🔒</div>
+                    <h3>Privacy & Data</h3>
+                    <ul>
+                        <li>All processing happens on your device</li>
+                        <li>No images are saved or uploaded</li>
+                        <li>No personal data is collected</li>
+                        <li>No third-party tracking</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="section-icon">⚙️</div>
+                    <h3>How It Works</h3>
+                    <ul>
+                        <li>AI analyzes facial features from camera</li>
+                        <li>Determines age category (Minor/Major)</li>
+                        <li>Automatically enables/disables SafeSearch</li>
+                        <li>Works on Google and Bing search engines</li>
+                    </ul>
+                </div>
+
+                <div class="warning-block">
+                    <div class="warning-icon">⚠️</div>
+                    <p><strong>Important:</strong> This extension is a tool to assist with content filtering. It should not replace parental supervision or other safety measures. AI predictions may not always be 100% accurate.</p>
+                </div>
+
+                <div class="consent-checkbox-wrapper">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="consentCheckbox">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">I have read and agree to the terms above. I consent to camera access for age detection purposes only.</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="button-section">
+                <button id="acceptBtn" class="accept-btn" disabled>
+                    <span class="btn-text">Accept & Continue</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <button id="declineBtn" class="decline-btn">
+                    <span>Decline</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="consent.js"></script>
+</body>
+</html>

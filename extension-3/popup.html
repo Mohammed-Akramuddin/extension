@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Face Age Verification</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <div class="logo-text">
+            <h1>Face Age Verify</h1>
+            <p class="tagline">AI-Powered Age Detection</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Video Section -->
+    <div class="video-section">
+      <div class="video-container">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="overlayCanvas" class="overlay-canvas"></canvas>
+
+        <!-- Scanning Effect -->
+        <div class="scan-overlay" id="scanOverlay">
+          <div class="scan-line"></div>
+        </div>
+
+        <!-- Face Guide Frame -->
+        <div class="face-guide" id="faceGuide">
+          <div class="guide-corner tl"></div>
+          <div class="guide-corner tr"></div>
+          <div class="guide-corner bl"></div>
+          <div class="guide-corner br"></div>
+        </div>
+
+        <!-- Guidelines Overlay -->
+        <div class="guidelines" id="guidelines">
+          <div class="guideline-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+            <span>Look directly at camera</span>
+          </div>
+          <div class="guideline-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+            <span>Keep face within frame</span>
+          </div>
+          <div class="guideline-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path>
+            </svg>
+            <span>Ensure good lighting</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden canvas for processing -->
+      <canvas id="work" width="224" height="224" hidden></canvas>
+    </div>
+
+    <!-- Status Card -->
+    <div class="status-card" id="statusCard">
+      <div class="status-icon" id="statusIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+        </svg>
+      </div>
+      <div class="status-content">
+        <p class="status-text" id="statusText">Ready to start verification</p>
+        <div class="status-progress" id="statusProgress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Card -->
+    <div class="result-card" id="resultCard">
+      <div class="result-icon-wrapper">
+        <div class="result-icon" id="resultIcon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+      <div class="result-content">
+        <h3 class="result-label">Classification</h3>
+        <p class="result-value" id="resultText">—</p>
+        <p class="result-confidence" id="resultSub"></p>
+      </div>
+    </div>
+
+    <!-- SafeSearch Badge -->
+    <div class="safesearch-card" id="safesearchBadge">
+      <div class="badge-icon" id="badgeIconWrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <div class="badge-content">
+        <p class="badge-title">SafeSearch Status</p>
+        <p class="badge-text" id="badgeText">Active</p>
+      </div>
+    </div>
+
+    <!-- Error Badge -->
+    <div class="error-card" id="errorBadge">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <div class="error-content">
+        <p class="error-title">Settings Locked</p>
+        <p class="error-text" id="errorText">SafeSearch cannot be changed automatically</p>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button id="startBtn" class="btn btn-primary">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>Start Verification</span>
+        <div class="btn-ripple"></div>
+      </button>
+      <button id="stopBtn" class="btn btn-secondary" disabled>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="6" y="6" width="12" height="12"></rect>
+        </svg>
+        <span>Stop</span>
+        <div class="btn-ripple"></div>
+      </button>
+    </div>
+
+    <!-- Open Settings Button -->
+    <button id="openSettingsBtn" class="btn btn-text">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6M1 12h6m6 0h6"></path>
+      </svg>
+      <span>Open Camera Settings</span>
+    </button>
+
+    <!-- Info Footer -->
+    <div class="info-footer">
+      <div class="info-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+      </div>
+      <p>Minor detected → SafeSearch ON | Adult detected → SafeSearch OFF</p>
+    </div>
+  </div>
+
+  <script src="lib/ort.min.js"></script>
+  <script src="lib/tf.min.js"></script>
+  <script src="lib/blazeface.min.js"></script>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

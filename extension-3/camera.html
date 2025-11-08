@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Age Detection</title>
+    <!-- Local libs: MV3 disallows remote code -->
+    <script src="lib/ort.min.js"></script>
+    <script src="lib/tf.min.js"></script>
+    <script src="lib/blazeface.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Face Age Detection</h1>
+        <p>Detect if a person is a major or minor using AI</p>
+      </header>
+      <main class="content">
+        <section class="video-section">
+          <div class="video-container" style="position:relative;">
+            <video id="video" autoplay playsinline muted style="max-width:100%; display:block;"></video>
+            <canvas id="overlayCanvas" style="position:absolute; left:0; top:0; pointer-events:none;"></canvas>
+          </div>
+          <div class="image-preview" id="imagePreviewContainer" style="display: none;">
+            <img id="previewImage" alt="Uploaded image preview" style="max-width:100%; display:block;">
+          </div>
+          <div class="controls">
+            <button id="startCamBtn" class="btn btn-primary">Start Camera</button>
+            <button id="stopCamBtn" class="btn btn-secondary" disabled>Stop Camera</button>
+            <button id="captureBtn" class="btn btn-analyze" disabled>Capture &amp; Analyze</button>
+            <label for="fileInput" class="btn btn-upload" style="cursor:pointer;">
+              Upload Image
+              <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </label>
+          </div>
+        </section>
+        <aside class="settings-section">
+          <div class="card">
+            <h2>Settings</h2>
+            <div class="setting-group">
+              <label for="modelSelect">Model Selection</label>
+              <select id="modelSelect">
+                <option value="swin_face_classifier.onnx">swin_face_classifier.onnx</option>
+              </select>
+            </div>
+            <div class="setting-group">
+              <label>
+                <input type="checkbox" id="useFaceDetection" checked>
+                Enable Face Detection
+              </label>
+            </div>
+            <div class="setting-group">
+              <label for="facePadding">Face Region Padding: <span id="paddingValue">20%</span></label>
+              <input type="range" id="facePadding" min="0" max="50" value="20">
+            </div>
+          </div>
+          <div class="card result-card">
+            <h2>Result</h2>
+            <div id="result" class="result">
+              <p class="status">Ready to analyze</p>
+            </div>
+          </div>
+          <button id="toggleDebug" class="btn btn-secondary">Show Debug Info</button>
+        </aside>
+      </main>
+      <section class="debug-section">
+        <canvas id="hiddenCanvas" style="display:none;"></canvas>
+        <pre id="debugLog" style="display: none; white-space: pre-wrap;"></pre>
+      </section>
+    </div>
+    <script src="web_script.js"></script>
+  </body>
+</html>
